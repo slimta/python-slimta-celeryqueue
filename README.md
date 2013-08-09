@@ -31,5 +31,5 @@ using this extension.
 [2]: http://docs.slimta.org/en/latest/api/extra.celeryqueue.html
 [3]: http://docs.slimta.org/en/latest/manual/extensions.html#celery-queue
 [4]: http://www.celeryproject.org/
-[5]: /slimta/python-slimta
+[5]: https://github.com/slimta/python-slimta
 
