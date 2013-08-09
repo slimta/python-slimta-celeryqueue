@@ -1,5 +1,5 @@
-### [Project Homepage][1]
-### [API Documentation][2] and [Manual][3]
+#### [Project Homepage][1]
+#### [API Documentation][2] and [Manual][3]
 
 --------------------
 
