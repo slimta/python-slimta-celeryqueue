@@ -28,8 +28,8 @@ Refer to the [API Documentation][2] and [Manual][3] for more information on
 using this extension.
 
 [1]: http://slimta.org/
-[2]: http://docs.slimta.org/en/latest/api/extra.celeryqueue.html
-[3]: http://docs.slimta.org/en/latest/manual/extensions.html#celery-queue
+[2]: http://docs.slimta.org/latest/api/extra.celeryqueue.html
+[3]: http://docs.slimta.org/latest/manual/extensions.html#celery-queue
 [4]: http://www.celeryproject.org/
 [5]: https://github.com/slimta/python-slimta
 
