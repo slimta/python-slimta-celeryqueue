@@ -102,6 +102,16 @@ class TestCeleryQueue(MoxTestBase):
         queue = CeleryQueue(self.celery, self.relay, bounce_factory=return_bounce)
         queue.attempt_delivery(self.env, 0)
 
+    def test_attempt_delivery_permanentrelayerror_nullsender(self):
+        task = self.mox.CreateMockAnything()
+        self.relay.attempt(self.bounce, 0).AndRaise(PermanentRelayError('permanent', Reply('550', 'permanent error')))
+        self.celery.task(IgnoreArg()).AndReturn(task)
+        self.mox.ReplayAll()
+        def return_bounce(envelope, reply):
+            self.fail('Tried to generate a bounce to a NULL sender.')
+        queue = CeleryQueue(self.celery, self.relay, bounce_factory=return_bounce)
+        queue.attempt_delivery(self.bounce, 0)
+
     def test_attempt_delivery_transientrelayerror_no_retry(self):
         task = self.mox.CreateMockAnything()
         subtask = self.mox.CreateMockAnything()

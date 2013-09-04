@@ -162,9 +162,10 @@ class CeleryQueue(object):
             self.enqueue_bounce(envelope, reply)
 
     def enqueue_bounce(self, envelope, reply):
-        bounce = self.bounce_factory(envelope, reply)
-        if bounce:
-            self._initiate_attempt(bounce)
+        if envelope.sender:
+            bounce = self.bounce_factory(envelope, reply)
+            if bounce:
+                self._initiate_attempt(bounce)
 
 
 # vim:et:fdm=marker:sts=4:sw=4:ts=4
