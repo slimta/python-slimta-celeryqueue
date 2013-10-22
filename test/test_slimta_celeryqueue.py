@@ -40,6 +40,12 @@ class TestCeleryQueue(MoxTestBase):
         with self.assertRaises(NotImplementedError):
             queue.flush()
 
+    def test_kill_noop(self):
+        self.celery.task(IgnoreArg())
+        self.mox.ReplayAll()
+        queue = CeleryQueue(self.celery, self.relay)
+        queue.kill()
+
     def test_enqueue(self):
         task = self.mox.CreateMockAnything()
         subtask = self.mox.CreateMockAnything()

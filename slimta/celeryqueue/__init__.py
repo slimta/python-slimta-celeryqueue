@@ -103,6 +103,9 @@ class CeleryQueue(object):
         """
         raise NotImplementedError()
 
+    def kill(self):
+        pass
+
     @staticmethod
     def _default_backoff(envelope, attempts):
         pass
