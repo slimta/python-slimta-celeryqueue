@@ -37,8 +37,7 @@ class TestCeleryQueue(MoxTestBase):
         self.celery.task(IgnoreArg())
         self.mox.ReplayAll()
         queue = CeleryQueue(self.celery, self.relay)
-        with self.assertRaises(NotImplementedError):
-            queue.flush()
+        self.assertRaises(NotImplementedError, queue.flush)
 
     def test_kill_noop(self):
         self.celery.task(IgnoreArg())
@@ -157,9 +156,7 @@ class TestCeleryQueue(MoxTestBase):
             self.assertEqual(1, attempts)
             return None
         queue = CeleryQueue(self.celery, self.relay, backoff=no_retry, bounce_factory=return_bounce)
-        with self.assertRaises(Exception) as e:
-            queue.attempt_delivery(self.env, 0)
-            self.assertEqual('unhandled error', str(e.exception))
+        self.assertRaises(Exception, queue.attempt_delivery, self.env, 0)
 
 
 # vim:et:fdm=marker:sts=4:sw=4:ts=4
