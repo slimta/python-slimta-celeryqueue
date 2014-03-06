@@ -21,16 +21,17 @@
 
 """Implements the |Queue| interface on top of `celery`_, a distributed task
 queue system. When a message is enqueued, a delivery task is queued up in
-celery. Celery workers will then pick up the task and attempt delivery, retrying
-and bouncing in the same manner as |Queue|.
+celery. Celery workers will then pick up the task and attempt delivery,
+retrying and bouncing in the same manner as |Queue|.
 
 A :class:`celery.Celery` object must be given to :class:`CeleryQueue`, and a
 task will be registered to attempt delivery of |Envelope| objects. It may be
-desirable to configure celery workers to `use gevent`_, since ``slimta`` |Relay|
-objects are expected to support it.
+desirable to configure celery workers to `use gevent`_, since ``slimta``
+|Relay| objects are expected to support it.
 
 .. _celery: http://www.celeryproject.org/
-.. _use gevent: http://docs.celeryproject.org/en/latest/configuration.html#celeryd-pool
+.. _use gevent: http://docs.celeryproject.org\
+/en/latest/configuration.html#celeryd-pool
 
 """
 
@@ -52,11 +53,12 @@ class CeleryQueue(object):
     """Instantiates a new object that can be used wherever a |Queue| is
     expected.
 
-    :param celery: :class:`celery.Celery` object to register delivery task with.
+    :param celery: :class:`celery.Celery` object to register delivery task
+                   with.
     :param relay: |Relay| instance to attempt delivery with.
     :param suffix: If given, the task registered in the :class:`~celery.Celery`
-                   object will have its name suffixed wih an underscore and this
-                   string.
+                   object will have its name suffixed wih an underscore and
+                   this string.
     :param backoff: Function that, given an |Envelope| and number of delivery
                     attempts, will return the number of seconds before the next
                     attempt. If it returns ``None``, the message will be
@@ -71,7 +73,7 @@ class CeleryQueue(object):
     """
 
     def __init__(self, celery, relay, suffix=None, backoff=None,
-                       bounce_factory=None):
+                 bounce_factory=None):
         if suffix:
             task_decorator = celery.task(name='attempt_delivery_'+suffix)
             self.attempt_task = task_decorator(self.attempt_delivery)
@@ -112,6 +114,7 @@ class CeleryQueue(object):
 
     def _run_policies(self, envelope):
         results = [envelope]
+
         def recurse(current, i):
             try:
                 policy = self.queue_policies[i]
@@ -125,6 +128,7 @@ class CeleryQueue(object):
                     recurse(env, i+1)
             else:
                 recurse(current, i+1)
+
         recurse(envelope, 0)
         return results
 
