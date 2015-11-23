@@ -149,7 +149,7 @@ class CeleryQueue(object):
 
     def attempt_delivery(self, envelope, attempts):
         try:
-            self.relay.attempt(envelope, attempts)
+            self.relay._attempt(envelope, attempts)
         except TransientRelayError as exc:
             self._handle_transient_failure(envelope, attempts, exc.reply)
         except PermanentRelayError as exc:

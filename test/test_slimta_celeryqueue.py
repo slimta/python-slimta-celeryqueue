@@ -20,7 +20,7 @@ class TestCeleryQueue(MoxTestBase):
         self.env = Envelope('sender@example.com', ['rcpt@example.com'])
         self.bounce = Envelope('', ['sender@example.com'])
 
-    def test_policies(self):
+    def test_queue_policies(self):
         self.celery.task(IgnoreArg())
         p1 = self.mox.CreateMock(QueuePolicy)
         p2 = self.mox.CreateMock(QueuePolicy)
@@ -59,7 +59,7 @@ class TestCeleryQueue(MoxTestBase):
 
     def test_attempt_delivery(self):
         self.celery.task(IgnoreArg())
-        self.relay.attempt(self.env, 0)
+        self.relay._attempt(self.env, 0)
         self.mox.ReplayAll()
         queue = CeleryQueue(self.celery, self.relay)
         queue.attempt_delivery(self.env, 0)
@@ -68,7 +68,7 @@ class TestCeleryQueue(MoxTestBase):
         task_func = self.mox.CreateMockAnything()
         self.celery.task(name='attempt_delivery_test').AndReturn(task_func)
         task_func.__call__(IgnoreArg())
-        self.relay.attempt(self.env, 0)
+        self.relay._attempt(self.env, 0)
         self.mox.ReplayAll()
         queue = CeleryQueue(self.celery, self.relay, 'test')
         queue.attempt_delivery(self.env, 0)
@@ -78,7 +78,7 @@ class TestCeleryQueue(MoxTestBase):
         subtask = self.mox.CreateMockAnything()
         result = self.mox.CreateMockAnything()
         result.id = '12345'
-        self.relay.attempt(self.env, 0).AndRaise(TransientRelayError('transient', Reply('450', 'transient error')))
+        self.relay._attempt(self.env, 0).AndRaise(TransientRelayError('transient', Reply('450', 'transient error')))
         self.celery.task(IgnoreArg()).AndReturn(task)
         task.s(self.env, 1).AndReturn(subtask)
         subtask.set(countdown=60)
@@ -96,7 +96,7 @@ class TestCeleryQueue(MoxTestBase):
         subtask = self.mox.CreateMockAnything()
         result = self.mox.CreateMockAnything()
         result.id = '12345'
-        self.relay.attempt(self.env, 0).AndRaise(PermanentRelayError('permanent', Reply('550', 'permanent error')))
+        self.relay._attempt(self.env, 0).AndRaise(PermanentRelayError('permanent', Reply('550', 'permanent error')))
         self.celery.task(IgnoreArg()).AndReturn(task)
         task.s(self.bounce, 0).AndReturn(subtask)
         subtask.apply_async().AndReturn(result)
@@ -109,7 +109,7 @@ class TestCeleryQueue(MoxTestBase):
 
     def test_attempt_delivery_permanentrelayerror_nullsender(self):
         task = self.mox.CreateMockAnything()
-        self.relay.attempt(self.bounce, 0).AndRaise(PermanentRelayError('permanent', Reply('550', 'permanent error')))
+        self.relay._attempt(self.bounce, 0).AndRaise(PermanentRelayError('permanent', Reply('550', 'permanent error')))
         self.celery.task(IgnoreArg()).AndReturn(task)
         self.mox.ReplayAll()
         def return_bounce(envelope, reply):
@@ -122,7 +122,7 @@ class TestCeleryQueue(MoxTestBase):
         subtask = self.mox.CreateMockAnything()
         result = self.mox.CreateMockAnything()
         result.id = '12345'
-        self.relay.attempt(self.env, 0).AndRaise(TransientRelayError('transient', Reply('450', 'transient error')))
+        self.relay._attempt(self.env, 0).AndRaise(TransientRelayError('transient', Reply('450', 'transient error')))
         self.celery.task(IgnoreArg()).AndReturn(task)
         task.s(self.bounce, 0).AndReturn(subtask)
         subtask.apply_async().AndReturn(result)
@@ -142,7 +142,7 @@ class TestCeleryQueue(MoxTestBase):
         subtask = self.mox.CreateMockAnything()
         result = self.mox.CreateMockAnything()
         result.id = '12345'
-        self.relay.attempt(self.env, 0).AndRaise(Exception('unhandled error'))
+        self.relay._attempt(self.env, 0).AndRaise(Exception('unhandled error'))
         self.celery.task(IgnoreArg()).AndReturn(task)
         task.s(self.bounce, 0).AndReturn(subtask)
         subtask.apply_async().AndReturn(result)
