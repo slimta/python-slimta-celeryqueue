@@ -135,7 +135,7 @@ class CeleryQueue(object):
     def enqueue(self, envelope):
         envelopes = self._run_policies(envelope)
         ids = [self._initiate_attempt(env) for env in envelopes]
-        results = zip(envelopes, ids)
+        results = list(zip(envelopes, ids))
         return results
 
     def _initiate_attempt(self, envelope, attempts=0, wait=None):
