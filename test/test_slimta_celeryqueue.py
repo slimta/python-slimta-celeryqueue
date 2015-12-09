@@ -1,7 +1,7 @@
 
 import unittest
 
-from mox import MoxTestBase, IsA, IgnoreArg
+from mox3.mox import MoxTestBase, IsA, IgnoreArg
 from celery import Celery
 
 from slimta.celeryqueue import CeleryQueue
