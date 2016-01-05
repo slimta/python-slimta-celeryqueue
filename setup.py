@@ -23,7 +23,7 @@ from setuptools import setup, find_packages
 
 
 setup(name='python-slimta-celeryqueue',
-      version='0.2.5',
+      version='0.3.0',
       author='Ian Good',
       author_email='icgood@gmail.com',
       description='Adds a celery-based queue extension to python-slimta.',
@@ -31,17 +31,18 @@ setup(name='python-slimta-celeryqueue',
       url='http://slimta.org/',
       packages=find_packages(),
       namespace_packages=['slimta'],
-      install_requires=['python-slimta',
+      install_requires=['python-slimta >= 3.0',
                         'celery'],
-      tests_require=['nose',
-                     'mox3'],
-      test_suite = 'nose.collector',
       classifiers=['Development Status :: 3 - Alpha',
                    'Topic :: Communications :: Email :: Mail Transport Agents',
                    'Intended Audience :: Developers',
                    'Intended Audience :: Information Technology',
                    'License :: OSI Approved :: MIT License',
-                   'Programming Language :: Python'])
+                   'Programming Language :: Python',
+                   'Programming Language :: Python :: 2.7',
+                   'Programming Language :: Python :: 3.3',
+                   'Programming Language :: Python :: 3.4',
+                   'Programming Language :: Python :: 3.5'])
 
 
 # vim:et:fdm=marker:sts=4:sw=4:ts=4
