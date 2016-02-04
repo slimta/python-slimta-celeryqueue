@@ -1,0 +1,4 @@
+pytest
+pytest-cov
+mox3
+flake8
