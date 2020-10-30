@@ -3,6 +3,8 @@
 
 --------------------
 
+#### _This extension is no longer maintained._
+
 About
 =====
 
